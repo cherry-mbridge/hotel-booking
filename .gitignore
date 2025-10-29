@@ -1,0 +1,8 @@
+# Go
+/backend/bin
+/backend/pkg/mod
+
+# Node / Nuxt
+/frontend/node_modules
+/frontend/.nuxt
+/frontend/dist
