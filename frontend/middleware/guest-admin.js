@@ -7,6 +7,6 @@ export default defineNuxtRouteMiddleware(async () => {
 console.log(isLoggedIn.value)
 console.log(userType.value)
   if (isLoggedIn.value && userType.value === 'admin') {
-    return navigateTo('/admin/dashboard')
+    return navigateTo('/admin/bookings')
   }
 })

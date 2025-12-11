@@ -28,6 +28,13 @@ func SetupRouter(r *gin.Engine) {
 		api_admin.Use(middlewares.AuthMiddleware())
 		{
 			api_admin.GET("me", adminController.Profile)
+
+			bookingRepo := repositories.NewBookingRepository()
+			bookingService := services.NewBookingService(bookingRepo)
+			bookingController := controllers.NewBookingController(bookingService)
+
+			api_admin.GET("bookings", bookingController.GetAll)
+			api_admin.GET("bookings/:id", bookingController.Show)
 		}
 	}
 
