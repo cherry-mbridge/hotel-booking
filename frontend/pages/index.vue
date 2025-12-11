@@ -1,16 +1,7 @@
 <template>
-  <div>
-    <h1>{{ message }}</h1>
+  <div class="p-10">
+    <h1 class="text-3xl font-bold mb-4">Welcome to Hotel Booking</h1>
+    <NuxtLink to="/login" class="text-blue-600 underline mr-4">Login</NuxtLink>
+    <NuxtLink to="/register" class="text-blue-600 underline">Register</NuxtLink>
   </div>
 </template>
-
-<script setup>
-import { ref, onMounted } from 'vue'
-
-const message = ref('Loading...')
-
-onMounted(async () => {
-  const res = await $fetch('http://localhost:8080/api/hello')
-  message.value = res.message
-})
-</script>

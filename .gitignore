@@ -1,6 +1,7 @@
 # Go
 /backend/bin
 /backend/pkg/mod
+backend/**/*.db
 
 # Node / Nuxt
 /frontend/node_modules

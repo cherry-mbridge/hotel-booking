@@ -20,7 +20,7 @@ export default function useAuth() {
         body: { email, password },
         credentials: 'include',
       })
-      navigateTo('/admin/dashboard')
+      return navigateTo('/admin/dashboard')
     } catch (e) {
       throw new Error('Login failed')
     }

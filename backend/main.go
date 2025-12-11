@@ -20,5 +20,6 @@ func main() {
 		MaxAge:           12 * time.Hour,
 	}))
 	routes.SetupRouter(r)
+	routes.UserRoutes(r)
 	r.Run(":8080")
 }
