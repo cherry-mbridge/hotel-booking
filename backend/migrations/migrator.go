@@ -8,6 +8,7 @@ import (
 func GetMigrations() []*gormigrate.Migration {
 	return []*gormigrate.Migration{
 		CreateAdmins,
+		CreateUsers,
 	}
 }
 
