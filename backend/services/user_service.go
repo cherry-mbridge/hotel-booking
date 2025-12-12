@@ -61,7 +61,7 @@ func (s *UserService) Login(c *gin.Context, email, password string) error {
 
 	// Set cookies. For dev: secure=false; in production set secure=true and proper Domain.
 
-	userService.SetTokenCookie(c, "access_token", accessToken, int(config.AccessTTL.Seconds()), false)
+	userService.SetTokenCookie(c, "user_token", accessToken, int(config.AccessTTL.Seconds()), false)
 
 	userService.SetTokenCookie(c, "refresh_token", refreshToken, int(config.RefreshTTL.Seconds()), false)
 	return nil
@@ -69,11 +69,11 @@ func (s *UserService) Login(c *gin.Context, email, password string) error {
 
 func (s *UserService) Logout(c *gin.Context) {
 	// Remove cookies
-	userService.SetTokenCookie(c, "access_token", "", -1, false)
+	userService.SetTokenCookie(c, "user_token", "", -1, false)
 }
 
 func (s *UserService) Profile(c *gin.Context) (map[string]any, error) {
-	token, err := c.Cookie("access_token")
+	token, err := c.Cookie("user_token")
 	if err != nil {
 		return nil, errors.New("token error")
 	}

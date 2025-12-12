@@ -1,14 +1,16 @@
 export default function useUserAuth() {
-  const isLoggedIn = useState('isLoggedIn', () => false)  
+  const isUserLoggedIn = useState('isUserLoggedIn', () => false)  
   const userType = useState('userType', () => null)
+  const userErrMsg = ref("")
 
   async function fetchSession() {
     try {
       const data = await $fetch('http://localhost:8080/api/users/me', { credentials: 'include' })
-      isLoggedIn.value = !!data?.type
-      userType.value = data.type ?? null
+
+      isUserLoggedIn.value = data?.type === 'user'
+      userType.value = data?.type === 'user' ? 'user' : null
     } catch {
-      isLoggedIn.value = false
+      isUserLoggedIn.value = false
       userType.value = null
     }
   }
@@ -22,9 +24,13 @@ export default function useUserAuth() {
         })
         return navigateTo('/login')
     } catch (e) {
-        throw new Error('Registration failed.') 
+        if (e.data?.errors) {
+          userErrMsg.value = Object.values(e.data.errors).join(', ')
+        } else {
+          userErrMsg.value = e.data?.error || 'Registration failed'
+        }
     }
-}
+  }
 
   async function login(email, password) {
     try {
@@ -35,7 +41,7 @@ export default function useUserAuth() {
       })
       return navigateTo('/dashboard')
     } catch (e) {
-      throw new Error('Login failed')
+      userErrMsg.value = e.data?.error || 'Login failed'
     }
   }
 
@@ -46,10 +52,10 @@ export default function useUserAuth() {
         credentials: 'include',
       })
     } finally {
-      isLoggedIn.value = false
+      isUserLoggedIn.value = false
       userType.value = null
     }
   }
 
-  return { isLoggedIn, userType, fetchSession, register, login, logout }
+  return { isUserLoggedIn, userType, userErrMsg, fetchSession, register, login, logout }
 }

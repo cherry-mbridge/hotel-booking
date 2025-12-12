@@ -10,6 +10,8 @@
       <button type="submit">Register</button>
     </form>
 
+    <p v-if="userErrMsg" class="text-red-500">{{ userErrMsg }}</p>
+
     <p>
       Already have an account?
       <NuxtLink to="/login">Login</NuxtLink>
@@ -22,7 +24,7 @@ const name = ref("")
 const email = ref("")
 const password = ref("")
 
-const { register } = useUserAuth()
+const { register, userErrMsg } = useUserAuth()
 
 const submit = async () => {
   try {
