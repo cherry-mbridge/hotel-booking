@@ -42,7 +42,7 @@ func (s *AdminService) Login(c *gin.Context, email, password string) error {
 
 	// Set cookies. For dev: secure=false; in production set secure=true and proper Domain.
 
-	adminService.SetTokenCookie(c, "access_token", accessToken, int(config.AccessTTL.Seconds()), false)
+	adminService.SetTokenCookie(c, "admin_token", accessToken, int(config.AccessTTL.Seconds()), false)
 
 	adminService.SetTokenCookie(c, "refresh_token", refreshToken, int(config.RefreshTTL.Seconds()), false)
 	return nil
@@ -56,11 +56,11 @@ func (s *AdminService) Logout(c *gin.Context) {
 	// c.SetCookie(config.RefreshCookieName, "", -1,
 	// 	"/", "localhost", false, true)
 
-	adminService.SetTokenCookie(c, "access_token", "", -1, false)
+	adminService.SetTokenCookie(c, "admin_token", "", -1, false)
 }
 
 func (s *AdminService) Profile(c *gin.Context) (map[string]any, error) {
-	token, err := c.Cookie("access_token")
+	token, err := c.Cookie("admin_token")
 	if err != nil {
 		return nil, errors.New("token error")
 	}

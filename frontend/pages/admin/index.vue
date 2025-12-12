@@ -6,6 +6,7 @@
       <input v-model="password" type="password" placeholder="Password" />
       <button type="submit">Login</button>
     </form>
+    <p v-if="errorMsg" class="text-red-500">{{ errorMsg }}</p>
   </div>
 </template>
 
@@ -18,7 +19,7 @@ import { useRouter } from 'vue-router'
 import useAuth from '~/composables/useAuth'
 
 const router = useRouter()
-const { login, isLoggedIn } = useAuth()
+const { login, isLoggedIn, errorMsg } = useAuth()
 const email = ref('')
 const password = ref('')
 
