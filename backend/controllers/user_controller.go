@@ -6,6 +6,7 @@ import (
 	"github.com/cherry-mbridge/hotel-booking/backend/dto"
 	"github.com/cherry-mbridge/hotel-booking/backend/services"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 type UserController struct {
@@ -20,7 +21,23 @@ func (ctl *UserController) Register(c *gin.Context) {
 	var req dto.RegisterUserDTO
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(400, gin.H{"errors": err})
+		errs := err.(validator.ValidationErrors)
+		errorMessages := make(map[string]string)
+
+		for _, e := range errs {
+			field := e.Field()
+
+			switch e.Tag() {
+			case "required":
+				errorMessages[field] = field + " is required"
+			case "email":
+				errorMessages[field] = "Invalid email format"
+			case "min":
+				errorMessages[field] = field + " must be at least " + e.Param() + " characters"
+			}
+		}
+
+		c.JSON(400, gin.H{"errors": errorMessages})
 		return
 	}
 

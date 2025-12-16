@@ -9,6 +9,8 @@
       <button type="submit">Login</button>
     </form>
 
+    <p v-if="userErrMsg" class="text-red-500">{{ userErrMsg }}</p>
+
     <p>
       No account?
       <NuxtLink to="/register">Register</NuxtLink>
@@ -24,7 +26,7 @@ definePageMeta({
 const email = ref("")
 const password = ref("")
 
-const { login } = useUserAuth()
+const { login, userErrMsg } = useUserAuth()
 
 const submit = async () => {
   try {

@@ -8,7 +8,7 @@ import (
 // Helper to set cookie
 func SetTokenCookie(c *gin.Context, name, token string, maxAge int, secure bool) {
 	c.SetCookie(
-		"access_token",
+		"admin_token",
 		token,
 		int(config.AccessTTL.Seconds()),
 		"/",

@@ -1,15 +1,16 @@
 export default function useAuth() {
-  const isLoggedIn = useState('isLoggedIn', () => false)  
-  const userType = useState('userType', () => null)
+  const isAdminLoggedIn = useState('isAdminLoggedIn', () => false)  
+  const adminType = useState('adminType', () => null)
+  const errorMsg = ref("")
 
   async function fetchSession() {
     try {
       const data = await $fetch('http://localhost:8080/api/admin/me', { credentials: 'include' })
-      isLoggedIn.value = !!data?.type
-      userType.value = data.type ?? null
+      isAdminLoggedIn.value = data?.type === 'admin'
+      adminType.value = data?.type === 'admin' ? 'admin' : null
     } catch {
-      isLoggedIn.value = false
-      userType.value = null
+      isAdminLoggedIn.value = false
+      adminType.value = null
     }
   }
 
@@ -22,7 +23,7 @@ export default function useAuth() {
       })
       return navigateTo('/admin/dashboard')
     } catch (e) {
-      throw new Error('Login failed')
+      errorMsg.value = e.data?.error || 'Login failed'
     }
   }
 
@@ -30,10 +31,10 @@ export default function useAuth() {
     try {
       await $fetch('http://localhost:8080/api/admin/logout', { credentials: 'include' })
     } finally {
-      isLoggedIn.value = false
-      userType.value = null
+      isAdminLoggedIn.value = false
+      adminType.value = null
     }
   }
 
-  return { isLoggedIn, userType, fetchSession, login, logout }
+  return { isAdminLoggedIn, adminType, errorMsg, fetchSession, login, logout }
 }
